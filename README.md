@@ -39,6 +39,8 @@ dsh plugin --profile <profile> add ~/dsh-plugins/dsh-termux-shell
 
 ## 配置
 
+下面所有字段都可以在 Web 的 **Plugins** 页面里直接修改（见下一节），也可以写进 profile 的 `cordis.patch.yml`。
+
 | 字段 | 默认 | 说明 |
 |---|---|---|
 | `acknowledgeUnconfined` | `false` | **必须显式设为 `true`**，否则工具在启动进程前直接报错。Android 没有可用文件沙箱，开启即表示接受无隔离执行 |
@@ -46,7 +48,16 @@ dsh plugin --profile <profile> add ~/dsh-plugins/dsh-termux-shell
 | `cwd` | 会话工作目录 | 未传 `workdir` 时的默认目录 |
 | `timeoutMs` / `maxTimeoutMs` | `120000` / `600000` | 默认超时与上限 |
 | `maxOutputBytes` | `64000` | 单流内存上限 |
+| `maxSpillBytes` | `67108864` | spill 文件上限 |
 | `graceMs` | `3000` | 终止宽限期 |
+
+## 在 Plugins 页面自定义参数
+
+1. 打开侧边栏 **Plugins**，进入 `dsh-termux-shell` 包，再进入 `termux-bash` 行，页面底部会出现参数表单（本插件通过 `plugins.row.config` 注册）。
+2. 可修改：允许无隔离执行、Shell 路径、默认工作目录、默认超时、超时上限、单流输出上限、spill 上限、终止宽限期。
+3. 点 **保存** 后，改动写入当前 profile 的配置层，插件在下一次 `termux_bash` 调用时读取，不需要重启。
+4. 清空某个文本/数字字段表示清除该项覆盖、恢复默认；**恢复默认** 会一次清掉本行所有覆盖。被覆盖的字段带“已覆盖”标记。
+5. 当前 profile 不接受配置修改时，输入框和按钮会被禁用并给出提示。
 
 ## 版本要求
 
@@ -60,11 +71,14 @@ dsh 在加载 profile 时会先读 `engines.dsh`（优先于 `@deepseek-ai/dsh-*
 
 ```
 dsh-termux-shell/
-├── package.json        # 插件清单：dsh.bundle、engines.dsh、exports
+├── package.json        # 插件清单：dsh.bundle、dsh.client、engines.dsh、exports
 ├── cordis.patch.yml    # bundle 层：插入 termux-bash 行
+├── client.js           # Web 端：Plugins 页面的参数表单
 ├── lib/
 │   ├── index.js        # 插件定义：Config、termux_bash 工具、system prompt 章节
 │   └── termux.js       # 纯函数：shell 解析、环境构造、结果渲染、模型可见文案
+├── locale/             # en/zh 显示元数据
+├── icon.svg
 ├── test/
 │   └── termux.test.mjs # node --test 单元测试
 ├── README.md
@@ -91,6 +105,10 @@ MIT License，见 [LICENSE](LICENSE)。
 
 ## 变更记录
 
+- **0.1.2**
+  - 新增 Web 参数表单：在 Plugins 页面进入 `dsh-termux-shell` → `termux-bash` 行，可直接编辑 Shell 路径、默认目录、超时、输出上限、spill 上限、宽限期与无隔离开关，保存进 profile 配置（`plugins.row.config` + `ctx.configForms`）。
+  - `Config` 字段全部标记 `volatile`，Host 才会把该行投影成可编辑的表单；保存后下一次 `termux_bash` 调用即生效，无需重启。
+  - 新增 `client.js`、`locale/`、`icon.svg` 与 `dsh.client` 清单。
 - **0.1.1**
   - 声明 `engines.dsh: ">=0.2.2-rc.3 <0.3.0"`：dsh 的兼容性预检会按此禁用不兼容的插件行，而不是静默放行（此前 peerDependencies 全为 `*`，任何版本都通过）。
   - 修正工具描述与 system prompt 章节中“内置 `bash` 必然失败”的说法：该结论仅在 `read-only` / `workspace-write` 下成立；`danger-full-access` 下 `dsh-bash-sandbox` 直接以进程权限执行，内置 `bash` 同样可用。

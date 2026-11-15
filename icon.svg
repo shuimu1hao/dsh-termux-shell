@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Termux shell">
+  <rect width="128" height="128" rx="24" fill="#1f2430"/>
+  <rect x="20" y="26" width="88" height="66" rx="10" fill="none" stroke="#7ee787" stroke-width="6"/>
+  <path d="M34 48l14 12-14 12" stroke="#f0f6fc" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M58 74h24" stroke="#f0f6fc" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="94" cy="94" r="16" fill="#7ee787"/>
+  <path d="M94 86v4M94 98v4M86 94h4M98 94h4" stroke="#1f2430" stroke-width="3" stroke-linecap="round"/>
+</svg>

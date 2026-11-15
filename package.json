@@ -1,19 +1,26 @@
 {
   "name": "dsh-termux-shell",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Termux/Android shell tool (termux_bash) for DeepSeek Harness: runs bash without a sandbox backend",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",
+    "./client": "./client.js",
     "./termux": "./lib/termux.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
     "lib/termux.js",
+    "client.js",
     "cordis.patch.yml",
-    "README.md"
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE"
   ],
   "license": "MIT",
   "repository": {
@@ -27,6 +34,15 @@
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-plugin-manager"
+      ]
     }
   },
   "peerDependencies": {

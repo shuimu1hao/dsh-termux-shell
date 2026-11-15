@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Termux shell",
+    "description": "Adds termux_bash for Android/Termux, where the built-in bash has no sandbox backend, with parameters editable on this row's page."
+  }
+}

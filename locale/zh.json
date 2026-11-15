@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Termux 终端",
+    "description": "为 Android/Termux 提供 termux_bash（内置 bash 无沙箱后端时使用），参数可在本插件行页面直接修改。"
+  }
+}
