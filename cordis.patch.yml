@@ -1,0 +1,7 @@
+# dsh-termux-shell bundle layer: inserts the model-facing `termux_bash` row.
+# Users can override this row's config in their profile cordis.patch.yml.
+- insert:
+    - id: termux-bash
+      name: dsh-termux-shell
+      config:
+        acknowledgeUnconfined: true

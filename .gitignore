@@ -1,0 +1,21 @@
+# Node / 依赖
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+*.tgz
+
+# 测试与运行时产物
+coverage/
+*.log
+
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# 环境变量（绝不上传）
+.env
+.env.*
