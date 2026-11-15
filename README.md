@@ -28,6 +28,8 @@ dsh 自带的 bash 工具走 `@deepseek-ai/dsh-sandbox-local`，其 runner 链�
 dsh plugin --profile <profile> add ~/dsh-plugins/dsh-termux-shell
 ```
 
+Termux 上的完整步骤见 **[docs/INSTALL-Termux.md](docs/INSTALL-Termux.md)**：包含 `github.com` 被阻断时的 zip 安装方式、为什么不能从 npm 装、以及升级/卸载/排障。要点：源码和 profile 放在 `$HOME`（不要放 `/storage/emulated/0`），Node ≥ 24.9，pnpm 在 PATH。
+
 本包声明了 `dsh.bundle`，所以安装后会自动加入该 profile 的 `dsh.profile.bundles`（即默认启用）。插件行由包内的 `cordis.patch.yml` 插入（`id: termux-bash`），**不需要**手改 profile 的 patch 层。
 
 安装后可在 Web 侧边栏 **Plugins** 页面查看并开关：
@@ -79,6 +81,8 @@ dsh-termux-shell/
 │   └── termux.js       # 纯函数：shell 解析、环境构造、结果渲染、模型可见文案
 ├── locale/             # en/zh 显示元数据
 ├── icon.svg
+├── docs/
+│   └── INSTALL-Termux.md  # Termux 安装教程
 ├── test/
 │   └── termux.test.mjs # node --test 单元测试
 ├── README.md
@@ -109,6 +113,7 @@ MIT License，见 [LICENSE](LICENSE)。
   - 新增 Web 参数表单：在 Plugins 页面进入 `dsh-termux-shell` → `termux-bash` 行，可直接编辑 Shell 路径、默认目录、超时、输出上限、spill 上限、宽限期与无隔离开关，保存进 profile 配置（`plugins.row.config` + `ctx.configForms`）。
   - `Config` 字段全部标记 `volatile`，Host 才会把该行投影成可编辑的表单；保存后下一次 `termux_bash` 调用即生效，无需重启。
   - 新增 `client.js`、`locale/`、`icon.svg` 与 `dsh.client` 清单。
+  - 新增 Termux 安装教程 [docs/INSTALL-Termux.md](docs/INSTALL-Termux.md)。
 - **0.1.1**
   - 声明 `engines.dsh: ">=0.2.2-rc.3 <0.3.0"`：dsh 的兼容性预检会按此禁用不兼容的插件行，而不是静默放行（此前 peerDependencies 全为 `*`，任何版本都通过）。
   - 修正工具描述与 system prompt 章节中“内置 `bash` 必然失败”的说法：该结论仅在 `read-only` / `workspace-write` 下成立；`danger-full-access` 下 `dsh-bash-sandbox` 直接以进程权限执行，内置 `bash` 同样可用。
